@@ -352,7 +352,9 @@ if(hasName(d.profile,"Mimic")) return;
   createHealText(a.x,a.y,"COPY",a.color);
 }},
 Combo:{name:"Combo",radius:40,spikeLength:20,spikes:2,rotateSpikes:true,color:"teal",maxHp:100,damage:2,description:"Increase damage on consecutive hits",onHit(a){a.profile.damage = Math.floor(a.profile.damage * 1) + 1;}},
-Executioner:{name:"Executioner",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"maroon", altcolor:"firebrick", ringcolor:"black", altradius:15, maxHp:100,damage:5,description:"Insta-kill when hitting low HP enemy",onHit(a,d){if(d.hp<d.profile.maxHp*0.25){a.profile.damage=9999}}},
+Executioner:{name:"Executioner",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"maroon", altcolor:"firebrick", ringcolor:"black", altradius:15, maxHp:100,damage:5,description:"Insta-kill when hitting low HP enemy",onHit(a,d){if(d.hp<d.profile.maxHp*0.25){
+    d.hp = 0; createDamageText(d.x,d.y,"99999",a.color);}}},
+
 Healer:{name:"Healer",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"lime", altcolor:"green", ringcolor:"limegreen", altradius:15, maxHp:100,damage:4,description:"Constantly regenerate HP",onHit(){}},
 Revive:{name:"Revive",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"gold", altcolor:"orangered", ringcolor:"orange", altradius:15, maxHp:100,damage:5,description:"Revive once",onHit(){}},
 Freeze:{name:"Freeze",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"lightskyblue", altcolor:"deepskyblue", ringcolor:"lightblue", altradius:15, maxHp:100,damage:5,description:"Freeze enemy",onHit(a,d){d.freezeT=120;}},
