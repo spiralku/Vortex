@@ -872,24 +872,25 @@ function openMenu(t){
   menu.style.maxHeight = "";
   menu.style.overflowY = "";
 
-  keys.forEach(n=>{
+keys.forEach(n=>{
   const d = document.createElement("div");
   d.className = "menu-item";
   d.textContent = n;
 
-  let index = selectedFusion1.findIndex(p => p.name === n);
+  let selectedList = (selectingTarget === 1) ? selectedFusion1 : selectedFusion2;
+  let index = selectedList.findIndex(p => p.name === n);
 
   // 🎨 SELECTED VISUAL
   if(index !== -1){
     d.classList.add("selected");
-  
+  }
 
-  } 
-d.onclick = ()=>selectCharacter(n);
+  d.onclick = ()=>selectCharacter(n);
+
   menu.appendChild(d);
 });
 
-  menu.style.display = "flex";
+menu.style.display = "flex";
 }
 
 function pickReward(type){
