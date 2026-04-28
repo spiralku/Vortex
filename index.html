@@ -2594,8 +2594,8 @@ hitSfx.play();
     
   }
 }
-    if(hasName(d.profile,'Counter')&&Math.random()<0.5){let target = a.owner ? a.owner : a; target.hp -= a.dmg; if(target.hp<0) target.hp=0; createDamageText(a.x,a.y,a.dmg,d.color);}
-      if(hasName(d.profile,'Shield') && Math.random()<0.5){ d.hp += a.dmg; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.dmg,"gray"); }
+    if(hasName(d.profile,'Counter')&&Math.random()<0.5){let target = a.owner ? a.owner : a; target.hp -= a.profile.damage; if(target.hp<0) target.hp=0; createDamageText(a.x,a.y,a.profile.damage,d.color);}
+      if(hasName(d.profile,'Shield') && Math.random()<0.5){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
       if(hasName(d.profile,'Expand')){ d.radius = Math.min(d.radius*1.1,d.profile.radius*2.5); d.profile.spikes=Math.min(2,d.profile.spikes+1); d.profile.damage=Math.min(2,d.profile.damage+0.5);  }
       if(hasName(d.profile,'Berserker')){d.profile.damage=Math.min(3,d.profile.damage+0.5);}
       if(hasName(d.profile,'Switch')){let t=a.owner?a.owner:a;let tx=t.x,ty=t.y;t.x=d.x;t.y=d.y;d.x=tx;d.y=ty;}
@@ -2671,8 +2671,8 @@ hitSfx.play();
     triggerDeath(d);
   }
 }
-      if(hasName(d.profile,'Counter')&&Math.random()<0.5){let target = a.owner ? a.owner : a; target.hp -= a.dmg; if(target.hp<0) target.hp=0; createDamageText(a.x,a.y,a.dmg,d.color);}
-      if(hasName(d.profile,'Shield') && Math.random()<0.5){ d.hp += a.dmg; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.dmg,"gray"); }
+      if(hasName(d.profile,'Counter')&&Math.random()<0.5){let target = a.owner ? a.owner : a; target.hp -= a.profile.damage; if(target.hp<0) target.hp=0; createDamageText(a.x,a.y,a.profile.damage,d.color);}
+      if(hasName(d.profile,'Shield') && Math.random()<0.5){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
       if(hasName(d.profile,'Expand')){ d.radius = Math.min(d.radius*1.1,d.profile.radius*2.5); d.profile.spikes=Math.min(2,d.profile.spikes+1); d.profile.damage=Math.min(2,d.profile.damage+0.5);  }
       if(hasName(d.profile,'Berserker')){d.profile.damage=Math.min(3,d.profile.damage+0.5);}
       if(hasName(d.profile,'Switch')){let t=a.owner?a.owner:a;let tx=t.x,ty=t.y;t.x=d.x;t.y=d.y;d.x=tx;d.y=ty;}
