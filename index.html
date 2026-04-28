@@ -2594,14 +2594,14 @@ hitSfx.play();
     
   }
 }
-    if(hasName(d.profile,'Counter')&&Math.random()<1){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
+    if(hasName(d.profile,'Counter')&&Math.random()<0.3){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
   target.hp = 0;
 
   if(target.isClone){
     clones.splice(clones.indexOf(target), 1);
   } else {
     triggerDeath(target);
-}} createDamageText(target.x,target.y,target.profile.damage,d.color);}
+}} createDamageText(a.x,a.y,a.profile.damage,d.color);}
       if(hasName(d.profile,'Shield') && Math.random()<0.3){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
       if(hasName(d.profile,'Expand')){ d.radius = Math.min(d.radius*1.1,d.profile.radius*2.5); d.profile.spikes=Math.min(2,d.profile.spikes+1); d.profile.damage=Math.min(2,d.profile.damage+0.5);  }
       if(hasName(d.profile,'Berserker')){d.profile.damage=Math.min(3,d.profile.damage+0.5);}
@@ -2678,14 +2678,14 @@ hitSfx.play();
     triggerDeath(d);
   }
 }
-      if(hasName(d.profile,'Counter')&&Math.random()<1){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
+      if(hasName(d.profile,'Counter')&&Math.random()<0.3){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
   target.hp = 0;
 
   if(target.isClone){
     clones.splice(clones.indexOf(target), 1);
   } else {
     triggerDeath(target);
-}} createDamageText(target.x,target.y,target.profile.damage,d.color);}
+}} createDamageText(a.x,a.y,a.profile.damage,d.color);}
       if(hasName(d.profile,'Shield') && Math.random()<0.5){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
       if(hasName(d.profile,'Expand')){ d.radius = Math.min(d.radius*1.1,d.profile.radius*2.5); d.profile.spikes=Math.min(2,d.profile.spikes+1); d.profile.damage=Math.min(2,d.profile.damage+0.5);  }
       if(hasName(d.profile,'Berserker')){d.profile.damage=Math.min(3,d.profile.damage+0.5);}
