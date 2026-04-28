@@ -1209,7 +1209,7 @@ function updateMenuVisual() {
   const items = document.querySelectorAll(".menu-item");
 
   items.forEach(d => {
-    const rawName = d.textContent.replace("🔒 ", "");
+    const rawName = d.textContent.replace(" ", "");
 
     d.classList.remove("selected", "locked");
 
@@ -1220,7 +1220,7 @@ function updateMenuVisual() {
     }
 
     // Always reset clean text (no lock icon)
-    d.textContent = rawName;
+    
   });
 }
 
