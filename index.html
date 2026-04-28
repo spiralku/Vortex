@@ -882,24 +882,7 @@ function openMenu(t){
   // 🎨 SELECTED VISUAL
   if(index !== -1){
     d.classList.add("selected");
-  }
-
-  // 🗼 TOWER MODE LOCK VISUAL
-  if(towerMode){
-
-    let limit = towerFusionLimit;
-
-    let lockedSlots = 0;
-    if(limit >= 2) lockedSlots = 1;
-    if(limit >= 3) lockedSlots = 2;
-
-    if(index !== -1 && index < lockedSlots){
-      d.classList.add("locked");
-      d.textContent = "🔒 " + n;
-      
-    } else {
-      d.onclick = ()=>selectCharacter(n);
-    }
+  
 
   } else {
     d.onclick = ()=>selectCharacter(n);
