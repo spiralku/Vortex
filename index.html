@@ -326,8 +326,8 @@ const PROFILES = {
   Dasher:{name:"Dasher",color:"yellow", altcolor:"aqua", ringcolor:"gold", altradius:15, radius:40,spikeLength:20,spikes:1,rotateSpikes:true,maxHp:100,damage:5,maxSpeedMultiplier:5, description:"Landing hit will increase speed",onHit(a){a.baseSpeed = Math.min(a.baseSpeed * 1.2, a.originalSpeed * a.profile.maxSpeedMultiplier);}},
   Equalizer:{name:"Equalizer",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"beige",maxHp:100,damage:5,description:"Balance HP on hit",onHit(a,d){let avg=(a.hp+d.hp)/2;a.hp=avg;d.hp=avg;}},
   Vampire: { name:"Vampire", color:"indigo", altcolor:"firebrick", ringcolor:"black", altradius:15, radius:40, spikeLength:20, spikes:1, rotateSpikes:true, maxHp:100, damage:5, description:"Heals 2 on successful hit", onHit(a){ let heal=2; a.hp+=heal; if(a.hp>a.profile.maxHp)a.hp=a.profile.maxHp; createHealText(a.x,a.y,heal,"green"); } },
-  Shield: { name:"Shield", color:"lightslategrey", altcolor:"darkslategrey", ringcolor:"slategrey", altradius:15, radius:40, spikeLength:20, spikes:1, rotateSpikes:true, maxHp:100, damage:3, description:"30% chance to block damage", onHit(){} },
-  Counter: { name: "Counter", color: "greenyellow", altcolor:"green", ringcolor:"lawngreen", altradius:15, radius:40, spikeLength: 20, spikes: 1, rotateSpikes: true, maxHp: 100, damage: 3, description: "30% chance to reflect damage when hit", onHit(){} },
+  Shield: { name:"Shield", color:"lightslategrey", altcolor:"darkslategrey", ringcolor:"slategrey", altradius:15, radius:40, spikeLength:20, spikes:1, rotateSpikes:true, maxHp:100, damage:3, description:"15% chance to block damage", onHit(){} },
+  Counter: { name: "Counter", color: "greenyellow", altcolor:"green", ringcolor:"lawngreen", altradius:15, radius:40, spikeLength: 20, spikes: 1, rotateSpikes: true, maxHp: 100, damage: 3, description: "15% chance to reflect damage when hit", onHit(){} },
   Shooter:{name:"Shooter",color:"lightyellow",radius:40,spikeLength:0,spikes:0,rotateSpikes:true, projSize:10, projDamage:4, maxHp:100,damage:1,description:"Constantly shoot projectile (2 dmg)",onHit(){}},
   Expand: { name:"Expand", color:"pink", altcolor:"indianred", ringcolor:"hotpink", altradius:15, radius:40, spikeLength:20, spikes:1, rotateSpikes:true, maxHp:100, damage:1, description:"Grows and increases damage when hit", onHit(){} },
   Shotgun:{name:"Shotgun",color:"#333", altcolor:"grey", ringcolor:"saddlebrown", altradius:15, radius:40,spikeLength:0,spikes:1,rotateSpikes:true, projSize:5, projDamage:4, maxHp:100,damage:1,description:"Shoots 10 bullets every 3s",onHit(){}},
@@ -2666,7 +2666,7 @@ hitSfx.play();
     
   }
 }
-    if(hasName(d.profile,'Counter')&&Math.random()<0.3){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
+    if(hasName(d.profile,'Counter')&&Math.random()<0.15){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
   target.hp = 0;
 
   if(target.isClone){
@@ -2674,7 +2674,7 @@ hitSfx.play();
   } else {
     triggerDeath(target);
 }} createDamageText(a.x,a.y,a.profile.damage,d.color);}
-      if(hasName(d.profile,'Shield') && Math.random()<0.3){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
+      if(hasName(d.profile,'Shield') && Math.random()<0.15){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
       if(hasName(d.profile,'Expand')){ d.radius = Math.min(d.radius*1.1,d.profile.radius*2.5); d.profile.spikes=Math.min(2,d.profile.spikes+1); d.profile.damage=Math.min(2,d.profile.damage+0.5);  }
       if(hasName(d.profile,'Berserker')){d.profile.damage=Math.min(3,d.profile.damage+0.5);}
       if(hasName(d.profile,'Switch')){let t=a.owner?a.owner:a;let tx=t.x,ty=t.y;t.x=d.x;t.y=d.y;d.x=tx;d.y=ty;}
@@ -2750,7 +2750,7 @@ hitSfx.play();
     triggerDeath(d);
   }
 }
-      if(hasName(d.profile,'Counter')&&Math.random()<0.3){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
+      if(hasName(d.profile,'Counter')&&Math.random()<0.15){let target = a.owner ? a.owner : a; target.hp -= target.profile.damage; if(target.hp <= 0){
   target.hp = 0;
 
   if(target.isClone){
@@ -2758,7 +2758,7 @@ hitSfx.play();
   } else {
     triggerDeath(target);
 }} createDamageText(a.x,a.y,a.profile.damage,d.color);}
-      if(hasName(d.profile,'Shield') && Math.random()<0.5){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
+      if(hasName(d.profile,'Shield') && Math.random()<0.15){ d.hp += a.profile.damage; if(d.hp>d.profile.maxHp)d.hp=d.profile.maxHp; createHealText(d.x,d.y,a.profile.damage,"gray"); }
       if(hasName(d.profile,'Expand')){ d.radius = Math.min(d.radius*1.1,d.profile.radius*2.5); d.profile.spikes=Math.min(2,d.profile.spikes+1); d.profile.damage=Math.min(2,d.profile.damage+0.5);  }
       if(hasName(d.profile,'Berserker')){d.profile.damage=Math.min(3,d.profile.damage+0.5);}
       if(hasName(d.profile,'Switch')){let t=a.owner?a.owner:a;let tx=t.x,ty=t.y;t.x=d.x;t.y=d.y;d.x=tx;d.y=ty;}
