@@ -3013,7 +3013,7 @@ if(towerIndex === 50){
 }
 
     // ⭐ REWARD CHECK (every 5 floors)
-    if(towerIndex % 1 === 0){
+    if(towerIndex % 1 === 0 && towerIndex < TOWER_PRESET.length){
 
       towerRewardPending = true;
 
