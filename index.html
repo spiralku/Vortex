@@ -2934,16 +2934,19 @@ if(b === ball2){
     let wins = parseInt(localStorage.getItem("profile_wins") || 0);
 localStorage.setItem("profile_wins", wins + 1);
 
-    let currentBest = parseInt(localStorage.getItem("profile_highestTower") || 0);
+    let currentBest = parseInt(localStorage.getItem("profile_highestFloor") || 0);
 
 if(towerIndex > currentBest){
+
   const charNames = selectedFusion1.length > 0
-  ? selectedFusion1.map(p => p.name).join(" ")
-  : (selected1 ? selected1.name : "Unknown");
+    ? selectedFusion1.map(p => p.name).join(" ")
+    : (selected1 ? selected1.name : "Unknown");
 
-const text = `${charNames} - Floor ${towerIndex + 1}`;
+  const text = `${charNames} - Floor ${towerIndex}`;
 
-localStorage.setItem("profile_highestTower", text);
+  // store BOTH
+  localStorage.setItem("profile_highestTower", text);
+  localStorage.setItem("profile_highestFloor", towerIndex);
 }
     saveProfile();
 // ⭐ UNLOCK 2ND SLOT
