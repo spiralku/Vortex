@@ -368,6 +368,26 @@
   <button id="towerBtn">TOWER: OFF</button>
 </div>
 
+<div id="towerClearBox" class="popupOverlay">
+  <div class="popupBox">
+    <h2 style="color:#ffd700;">🏆 TOWER CLEARED!</h2>
+
+    <p style="margin-top:10px;">
+      You conquered all floors!
+    </p>
+
+    <div id="towerClearStats" style="margin-top:10px;">
+      <!-- dynamic text -->
+    </div>
+
+    <br>
+
+    <button class="menuBtn" id="towerClearContinueBtn">
+      Continue
+    </button>
+  </div>
+</div>
+  
 <div id="menu"></div>
 
 <div id="timer">00:00:00</div>
@@ -962,6 +982,30 @@ changelogBox.onclick = (e) => {
   }
 };
 
+towerClearContinueBtn.onclick = () => {
+  towerClearBox.style.display = "none";
+};
+
+  function showTowerClearPopup(){
+
+  // increment tower clears
+  let clears = parseInt(localStorage.getItem("profile_towerClears") || 0);
+  clears++;
+  localStorage.setItem("profile_towerClears", clears);
+
+const charNames = selectedFusion1.length > 0
+    ? selectedFusion1.map(p => p.name).join(" ")
+    : (selected1 ? selected1.name : "Unknown");
+
+  
+  // update text
+  document.getElementById("towerClearStats").innerHTML =
+   `<i><u>${charNames}</u> shattered every floor without mercy.</i><br><br><b>Total Clears:</b> ${clears}x`;
+
+  // show popup
+  towerClearBox.style.display = "flex";
+}
+  
 function updateRewardUI(){
 
   const dmg = Math.floor(towerBuffs.damageBoost);
@@ -2986,10 +3030,10 @@ return;
     
 
     if(towerIndex >= TOWER_PRESET.length){
-      alert("YOU CLEARED THE TOWER!");
-      let clears = parseInt(localStorage.getItem("profile_towerClears") || 0);
-  localStorage.setItem("profile_towerClears", clears + 1);
+      showTowerClearPopup();
+      
   saveProfile();
+      localStorage.removeItem("towerSave");
       towerIndex = 0;
       towerPlayerLocked = false;
       startBtn.classList.remove("ready");
