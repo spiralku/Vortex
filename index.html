@@ -1654,7 +1654,11 @@ return tips;
   // base
 ctx.beginPath();
 ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
-ctx.fillStyle = this.color;
+ctx.fillStyle =
+  (this.dead && Math.floor(this.deathTimer/5)%2===0) ||
+  (this.flickerTimer > 0 && Math.floor(this.flickerTimer/3)%2===0)
+    ? "white"
+    : this.color;
 ctx.fill();
 
 // light from top-left (flat style, not smooth gradient)
