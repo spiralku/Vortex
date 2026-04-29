@@ -1740,7 +1740,95 @@ ctx.arc(0, 0, r * 0.6, 0, Math.PI*2);
 ctx.fillStyle = "rgba(255,255,255,0.15)";
 ctx.fill();
 
-  ctx.restore();
+  ctx.save();
+
+  // move origin to center of ball
+  ctx.translate(this.x, this.y);
+
+  // rotate same as spikes
+  ctx.rotate(this.spikeRotation || 0);
+
+  ctx.beginPath();
+  for(let i = 0; i < sides; i++){
+    let angle = (Math.PI * 2 / sides) * i;
+    let px = Math.cos(angle) * r;
+    let py = Math.sin(angle) * r;
+
+    if(i === 0) ctx.moveTo(px, py);
+    else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+
+  ctx.fillStyle = this.profile.altcolor || "orange";
+ctx.fill();
+
+// top highlight (flat)
+ctx.beginPath();
+ctx.arc(0, 0, r * 0.6, 0, Math.PI*2);
+ctx.fillStyle = "rgba(255,255,255,0.15)";
+ctx.fill();
+
+ctx.restore();
+// 💨 WIND SPIN EFFECT
+
+const staminaRatio = this.maxStamina > 0 
+  ? this.stamina / this.maxStamina 
+  : 0;
+
+ctx.save();
+ctx.translate(this.x, this.y);
+
+// use same rotation feel but slightly offset for motion feel
+const baseRot = this.spikeRotation || 0;
+
+for (let i = 0; i < 3; i++) {
+
+  let angle = baseRot + i * (Math.PI * 2 / 3);
+
+  // arc position
+  let dist = this.radius * 1.2;
+
+  let x = Math.cos(angle) * dist;
+  let y = Math.sin(angle) * dist;
+
+  ctx.beginPath();
+
+// sharper, directional arc (one side shorter)
+ // 💨 sharp wind slice (both ends pointed)
+
+let a0 = angle - 0.4;
+let a1 = angle + 0.4;
+
+let rOuter = dist + 2;   // outer edge
+let rInner = dist - 2;   // inner edge
+
+ctx.beginPath();
+
+// start tip
+ctx.moveTo(
+  Math.cos((a0 + a1) / 2) * dist,
+  Math.sin((a0 + a1) / 2) * dist
+);
+
+// outer curve
+ctx.arc(0, 0, rOuter, a0, a1);
+
+// end tip
+ctx.lineTo(
+  Math.cos((a0 + a1) / 2) * dist,
+  Math.sin((a0 + a1) / 2) * dist
+);
+
+// inner curve (back)
+ctx.arc(0, 0, rInner, a1, a0, true);
+
+ctx.closePath();
+
+ctx.fillStyle = `rgba(255,255,255,${0.85 * staminaRatio})`;
+ctx.fill();
+}
+
+ctx.restore();
 
 
   // 🌊 Shockwave visual
