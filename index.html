@@ -1809,7 +1809,7 @@ ctx.translate(this.x, this.y);
 
 ctx.beginPath();
 ctx.arc(lightOffset, lightOffset, r * 1, 0, Math.PI * 2);
-ctx.fillStyle = "rgba(0,0,0,0.30)";
+ctx.fillStyle = "rgba(0,0,0,0.25)";
 ctx.fill();
 
 ctx.restore();
@@ -2736,9 +2736,7 @@ function hasName(profile, name){
 }
 
 function startGame(){
-let matches = parseInt(localStorage.getItem("profile_totalMatches") || 0);
-localStorage.setItem("profile_totalMatches", matches + 1);
-saveProfile();
+
 startSfx.play(); 
 bgm.volume = 0.5;
 bgm.play().catch(()=>{}); // prevents autoplay error
@@ -2917,7 +2915,9 @@ if(b.isGemini && b.twin){
 }
   b.deathTimer = 60;
   gameOver = true;
-
+let matches = parseInt(localStorage.getItem("profile_totalMatches") || 0);
+localStorage.setItem("profile_totalMatches", matches + 1);
+saveProfile();
 // 🗼 TOWER MODE LOGIC
 if(towerMode){
 
@@ -2933,7 +2933,6 @@ if(b === ball2){
     towerIndex++;
     let wins = parseInt(localStorage.getItem("profile_wins") || 0);
 localStorage.setItem("profile_wins", wins + 1);
-
     let currentBest = parseInt(localStorage.getItem("profile_highestFloor") || 0);
 
 if(towerIndex > currentBest){
@@ -2948,7 +2947,7 @@ if(towerIndex > currentBest){
   localStorage.setItem("profile_highestTower", text);
   localStorage.setItem("profile_highestFloor", towerIndex);
 }
-    saveProfile();
+saveProfile();
 // ⭐ UNLOCK 2ND SLOT
 if(towerIndex === 10){
   towerFusionLimit = 2;
