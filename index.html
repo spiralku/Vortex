@@ -1,4 +1,14 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<!DOCTYPE html><html lang="en"><head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K13MXT3FFT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-K13MXT3FFT');
+</script>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Vortex Warrior</title>
 
 
@@ -2780,7 +2790,10 @@ function hasName(profile, name){
 }
 
 function startGame(){
-
+gtag('event', 'play_game', {
+  event_category: 'game',
+  event_label: 'start_match'
+});
 startSfx.play(); 
 bgm.volume = 0.5;
 bgm.play().catch(()=>{}); // prevents autoplay error
@@ -2975,6 +2988,17 @@ if(b === ball2){
   setTimeout(()=>{
 
     towerIndex++;
+    towerIndex++;
+
+if (typeof gtag === "function") {
+  gtag('event', 'floor_reached', {
+    event_category: 'tower',
+    floor: towerIndex + 1
+  });
+}
+    gtag('event', 'win_match', {
+  event_category: 'game'
+});
     let wins = parseInt(localStorage.getItem("profile_wins") || 0);
 localStorage.setItem("profile_wins", wins + 1);
     let currentBest = parseInt(localStorage.getItem("profile_highestFloor") || 0);
