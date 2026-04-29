@@ -364,8 +364,26 @@ document.getElementById("continueBtn").onclick = () => {
 
 document.addEventListener("visibilitychange", () => {
   if(document.hidden){
+
+    isPaused = true;
+
+    // pause audio
     bgm.pause();
+
   } else {
+
+    isPaused = false;
+
+    // reset stamina timers (VERY IMPORTANT)
+    if(ball1){
+      ball1.lastStaminaTick = performance.now();
+      ball1.staminaStartTime = performance.now();
+    }
+    if(ball2){
+      ball2.lastStaminaTick = performance.now();
+      ball2.staminaStartTime = performance.now();
+    }
+
     bgm.play().catch(()=>{});
   }
 });
@@ -735,6 +753,7 @@ Object.values(PROFILES).forEach(p => {
 });
 
 let GAME_SPEED = 3;
+  let isPaused = false;
 let fusionMode = true;
 let towerMode = false;
 let towerList = [];
@@ -3410,11 +3429,20 @@ if(shakeTime > 0){
   
 }
 ctx.clearRect(0, 0, canvas.width, canvas.height);
- drawArena(); if(gameStarted){ if(ball1 && !ball1.dead) drawShadow(ball1);
-  if(ball2 && !ball2.dead) drawShadow(ball2); if(!gameOver){ if(hitPause<=0){ ball1.update(); ball2.update(); 
+ drawArena(); if(gameStarted){
 
+  if(isPaused){
+    requestAnimationFrame(loop);
+    return;
+  }
 
+  if(ball1 && !ball1.dead) drawShadow(ball1);
+  if(ball2 && !ball2.dead) drawShadow(ball2);
 
+  if(!gameOver){
+    if(hitPause<=0){
+      ball1.update();
+      ball2.update();
 for(let i = sparks.length - 1; i >= 0; i--){
   let s = sparks[i];
 
