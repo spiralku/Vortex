@@ -1952,10 +1952,10 @@ if(!gameOver && !this.dead){
 
   const battleTime = (now - this.staminaStartTime) / 1000;
 
-  if(battleTime >= 10){
+  if(battleTime >= 45){
     this.stamina = Math.max(
       0,
-      this.stamina - (this.maxStamina / 5) * elapsed
+      this.stamina - (this.maxStamina / 15) * elapsed
     );
   }
 }
