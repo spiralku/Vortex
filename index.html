@@ -2933,7 +2933,7 @@ if(b === ball2){
     towerIndex++;
     let wins = parseInt(localStorage.getItem("profile_wins") || 0);
 localStorage.setItem("profile_wins", wins + 1);
-saveProfile();
+
     let currentBest = parseInt(localStorage.getItem("profile_highestTower") || 0);
 
 if(towerIndex > currentBest){
