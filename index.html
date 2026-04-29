@@ -301,13 +301,12 @@
       border-radius: 12px;
       background: rgba(0,0,0,0.35);
     ">
-      <h3>Version 1.0.0</h3>
+      <h3>Version 1.3</h3>
       <ul>
-        <li>Initial release.</li>
-        <li>Multiple Beyblade characters added.</li>
-        <li>Unique abilities implemented.</li>
-        <li>Fusion system introduced.</li>
+        <li>Bug Fixes.</li>
         <li>Stamina system added.</li>
+        <li>Visual updated.</li>
+        
       </ul>
     </div>
 
@@ -1650,23 +1649,45 @@ return tips;
 
   });
 
+
   // 🔵 Draw body
-  ctx.beginPath();
-  ctx.arc(this.x,this.y,this.radius,0,Math.PI*2);
-  ctx.fillStyle =
-  (this.dead && Math.floor(this.deathTimer/5)%2===0) ||
-  (this.flickerTimer > 0 && Math.floor(this.flickerTimer/3)%2===0)
-    ? "white"
-    : this.color;
-  ctx.fill();
-  // 🟢 outer ring
+  // base
 ctx.beginPath();
-ctx.arc(this.x, this.y, this.radius - 2.5, 0, Math.PI * 2); // slightly inside
-ctx.strokeStyle =
-(hasName(this.profile, "Taurus") && this.isTaurusStance)
-  ? "dimgray"
-  : (this.profile.ringcolor || "darkgrey");
+ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
+ctx.fillStyle = this.color;
+ctx.fill();
+
+// light from top-left (flat style, not smooth gradient)
+ctx.beginPath();
+ctx.arc(this.x - this.radius * 0.25, this.y - this.radius * 0.25, this.radius * 0.7, 0, Math.PI*2);
+ctx.fillStyle = "rgba(255,255,255,0.12)";
+ctx.fill();
+
+// shadow bottom-right
+ctx.beginPath();
+ctx.arc(this.x + this.radius * 0.3, this.y + this.radius * 0.3, this.radius * 0.9, 0, Math.PI*2);
+ctx.fillStyle = "rgba(0,0,0,0.01)";
+ctx.fill();
+  // 🟢 outer ring
+// base ring
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.radius - 2.5, 0, Math.PI * 2);
+ctx.strokeStyle = this.profile.ringcolor || "darkgrey";
 ctx.lineWidth = 7;
+ctx.stroke();
+
+// highlight (top-left)
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.radius - 2.5, Math.PI*1.2, Math.PI*1.8);
+ctx.strokeStyle = "rgba(255,255,255,0.3)";
+ctx.lineWidth = 3;
+ctx.stroke();
+
+// shadow (bottom-right)
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.radius - 2.5, Math.PI*0.2, Math.PI*0.8);
+ctx.strokeStyle = "rgba(0,0,0,0.3)";
+ctx.lineWidth = 3;
 ctx.stroke();
   // 🔷 inner hexagon
 
@@ -1692,8 +1713,14 @@ ctx.stroke();
   }
   ctx.closePath();
 
-  ctx.fillStyle = this.profile.altcolor || "darkgray";
-  ctx.fill();
+  ctx.fillStyle = this.profile.altcolor || "orange";
+ctx.fill();
+
+// top highlight (flat)
+ctx.beginPath();
+ctx.arc(0, 0, r * 0.6, 0, Math.PI*2);
+ctx.fillStyle = "rgba(255,255,255,0.15)";
+ctx.fill();
 
   ctx.restore();
 
