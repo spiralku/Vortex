@@ -1333,15 +1333,19 @@ function debugResetTower(){
 // 👤 RESET PROFILE
 function debugResetProfile(){
   localStorage.removeItem("profileSave");
+localStorage.removeItem("profile_highestFloor");
+localStorage.removeItem("profile_highestTower");
+localStorage.removeItem("profile_fastestMatch");
+localStorage.removeItem("profile_totalMatches");
+localStorage.removeItem("profile_wins");
+localStorage.removeItem("profile_losses");
+localStorage.removeItem("profile_towerClears");
+
+saveProfile();
   alert("Profile reset");
   toggleDebug();
 }
 
-function debugResetProfile(){
-  localStorage.removeItem("profileSave");
-  alert("Profile reset");
-  toggleDebug();
-}
 
 function debugUnlockAllEquipment(){
   localStorage.setItem("profile_towerClears", 100);
