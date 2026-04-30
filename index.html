@@ -6,7 +6,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-K13MXT3FFT');
+  gtag('config', 'G-x');
 </script>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Vortex Warrior</title>
@@ -244,6 +244,43 @@
     inset 0 0 6px rgba(0,255,200,0.3);
 }
 
+.aura-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 8px;
+
+  border: 1px solid rgba(0,255,200,0.2);
+  background: rgba(0,255,200,0.05);
+
+  align-items: center;
+  position: relative;
+}
+
+.aura-item.selected {
+  background: rgba(0,255,200,0.18);
+  border-color: rgba(0,255,200,0.8);
+
+  box-shadow: 
+    0 0 8px rgba(0,255,200,0.4),
+    inset 0 0 6px rgba(0,255,200,0.3);
+}
+
+.aura-locked {
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  border-radius:8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+
+  font-size:12px;
+  color:#aaa;
+}
 
 </style>
 </head>
@@ -282,6 +319,7 @@
 </div>
 
 
+
 <div id="mainMenuBox" class="popupOverlay">
   <div class="popupBox">
     <h2>Main Menu</h2>
@@ -290,6 +328,7 @@
     <button class="menuBtn" id="settingsMenuBtn">Settings</button>
     <button class="menuBtn" id="changelogMenuBtn">Changelog</button>
     <button class="menuBtn" id="statsMenuBtn">Leaderboard</button>
+    <button class="menuBtn" onclick="openEquipment()">Equipment</button>
     <button class="menuBtn" id="creditsMenuBtn">Credits</button>
 
     <br><br>
@@ -341,13 +380,16 @@
       border-radius: 12px;
       background: rgba(0,0,0,0.35);
     ">
-      <h3>Version 1.2</h3>
+    
+      <h3>Version 1.2.0</h3>
       <ul>
         <li>Stamina system introduced.</li>
-        <li>Profile menu imppemented</li>
+        <li>Profile implemented</li>
+        <li>Equipment system implemented</li>
+        <li>Auras equipment introduced</li>
         <li>Bug fixes.</li>
       </ul>
-      <h3>Version 1.0</h3>
+      <h3>Version 1.0.0</h3>
       <ul>
         <li>Initial release.</li>
         <li>Multiple Beyblade characters added.</li>
@@ -371,11 +413,61 @@
   </div>
 </div>
 
+<div id="debugBtn" onclick="toggleDebug()" style="
+display:none;
+  position:fixed;
+  bottom:40px;
+  right:20px;
+  width:50px;
+  height:50px;
+  background:#fff;
+  border-radius:50%;
+  z-index:999;
+  cursor:pointer;
+"></div>
+
 <div id="btnRow">
   <button id="menuBtn">MENU</button>
   <button id="randomBtn">RANDOM</button>
   <button id="startBtn">START</button>
   <button id="towerBtn">TOWER: OFF</button>
+</div>
+
+<div id="debugPanel" style="
+  display:none;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.7);
+  z-index:2000;
+  justify-content:center;
+  align-items:center;
+">
+
+  <div style="
+    background:#222;
+    padding:20px;
+    border-radius:10px;
+    width:260px;
+    text-align:center;
+  ">
+
+    <h3>DEBUG</h3>
+
+    <button onclick="debugAutoWin()">Auto Win</button><br><br>
+    <button onclick="debugAutoLose()">Auto Lose</button><br><br>
+
+    <input id="floorInput" type="number" placeholder="Floor #" style="width:80px;">
+    <button onclick="debugFloorJump()">Jump</button><br><br>
+
+    <button onclick="debugUnlimitedHP()">Unlimited HP</button><br><br>
+
+    <button onclick="debugResetTower()">Reset Tower</button><br><br>
+    <button onclick="debugResetProfile()">Reset Profile</button><br><br>
+
+    <button onclick="toggleDebug()">Close</button>
+
+  </div>
 </div>
 
 <div id="towerClearBox" class="popupOverlay">
@@ -395,6 +487,26 @@
     <button class="menuBtn" id="towerClearContinueBtn">
       Continue
     </button>
+  </div>
+</div>
+
+<div id="equipMenu" class="popupOverlay">
+  <div class="popupBox">
+
+    <h2>Equipment</h2>
+<h3>Auras</h3>
+    <div id="auraList" style="
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    "></div>
+
+    <br>
+
+    <button class="menuBtn dangerBtn" onclick="closeEquipment()">Close</button>
   </div>
 </div>
   
@@ -808,6 +920,40 @@ const TOWER_PRESET = [
   // keep going... more floor will added later
 ];
 
+const AURAS = [
+  {req:1, id:"a1", name:"First Enhance", atk:0.5},
+  {req:3, id:"a2", name:"Aura Shield", shield:true},
+  {req:5, id:"a3", name:"Second Enhance", atk:1},
+  {req:10, id:"a4", name:"Golden Blessings", dmgReduce:0.5},
+  {req:15, id:"a5", name:"Angel Wings", dmgReduce:1, wings:1},
+  {req:30, id:"a6", name:"Heaven Blessings", atk:1, dmgReduce:1, wings:1},
+  {req:50, id:"a7", name:"Heaven Wings", atk:2, dmgReduce:2, wings:2},
+  {req:100, id:"a8", name:"Devil Pact", atk:10, dmgTaken:6, wings:2}
+];
+
+const auraImages = {
+  a1: new Image(),
+  a2: new Image(),
+  a3: new Image(),
+  a4: new Image(),
+  a5: new Image(),
+  a6: new Image(),
+  a7: new Image(),
+  a8: new Image(),
+};
+
+// assign sources
+auraImages.a1.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura1.png";
+auraImages.a2.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura2.png";
+auraImages.a3.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura3.png";
+auraImages.a4.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura4.png";
+auraImages.a5.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura5.png";
+auraImages.a6.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura6.png";
+auraImages.a7.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura7.png";
+auraImages.a8.src = "https://raw.githubusercontent.com/spiralku/Vortex-Warrior/main/aura8.png";
+
+let equippedAura = null;
+
 Object.values(PROFILES).forEach(p => {
   
 
@@ -995,6 +1141,188 @@ changelogBox.onclick = (e) => {
 towerClearContinueBtn.onclick = () => {
   towerClearBox.style.display = "none";
 };
+
+function openEquipment(){
+mainMenuBox.style.display = "none";
+  document.getElementById("equipMenu").style.display = "flex";
+  renderAuraList();
+}
+
+function closeEquipment(){
+  document.getElementById("equipMenu").style.display = "none";
+}
+
+function renderAuraList(){
+
+  const list = document.getElementById("auraList");
+  list.innerHTML = "";
+
+  const clears = getTowerClears();
+
+  for(let a of AURAS){
+
+    const unlocked = clears >= a.req;
+
+    const div = document.createElement("div");
+    div.className = "aura-item";
+
+    if(equippedAura === a.id){
+      div.classList.add("selected");
+    }
+
+    // 🎨 PREVIEW CANVAS
+    const canvas = document.createElement("canvas");
+    canvas.width = 50;
+    canvas.height = 50;
+
+    drawAuraPreview(canvas, a);
+
+    // 📜 DESCRIPTION
+    const desc = document.createElement("div");
+    desc.style.flex = "1";
+
+    desc.innerHTML = `
+      <b>${a.name}</b><br>
+      <span style="font-size:11px; color:#aaa;">
+        ${getAuraDescription(a)}
+      </span>
+    `;
+
+    div.appendChild(canvas);
+    div.appendChild(desc);
+
+    // 🔒 LOCK
+    if(!unlocked){
+      const lock = document.createElement("div");
+      lock.className = "aura-locked";
+      lock.innerText = `Tower Clears (${clears}/${a.req})`;
+      div.appendChild(lock);
+    } else {
+      div.onclick = ()=>{
+        equippedAura = a.id;
+        saveAura();
+        renderAuraList();
+      };
+    }
+
+    list.appendChild(div);
+  }
+}
+
+function getAuraDescription(a){
+
+  if(a.id === "a1") return "Awakening energy surges. Increases attack by 0.5";
+  if(a.id === "a2") return "Protective aura. Blocks the first incoming hit";
+  if(a.id === "a3") return "Energy floods your core. Increases attack by 1";
+  if(a.id === "a4") return "Golden energy stabilizes, reducing damage taken by 0.5";
+  if(a.id === "a5") return "Celestial wings emerge, reducing damage taken by 1";
+  if(a.id === "a6") return "Blessed by divine being, enhance attack and defense by 1";
+  if(a.id === "a7") return "Wings of Paradise. Greatly enhance attack and defense by 2.";
+  if(a.id === "a8") return "Regretful. Increases attack by 10, increase damage taken by 6.";
+
+  return "";
+}
+
+function drawAuraPreview(canvas, aura){
+
+  const ctx = canvas.getContext("2d");
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const img = auraImages[aura.id];
+
+  if(img && img.complete){
+
+    const aspect = img.width / img.height;
+
+    let drawWidth = canvas.width;
+    let drawHeight = drawWidth / aspect;
+
+    if(drawHeight > canvas.height){
+      drawHeight = canvas.height;
+      drawWidth = drawHeight * aspect;
+    }
+
+    const x = (canvas.width - drawWidth) / 2;
+    const y = (canvas.height - drawHeight) / 2;
+
+    ctx.drawImage(
+      img,
+      x,
+      y,
+      drawWidth,
+      drawHeight
+    );
+
+  } else {
+    ctx.fillStyle = "#333";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+function toggleDebug(){
+  let panel = document.getElementById("debugPanel");
+  panel.style.display = panel.style.display === "flex" ? "none" : "flex";
+}
+
+// 🏆 AUTO WIN (kill enemy)
+function debugAutoWin(){
+  if(ball2 && !ball2.dead){
+    ball2.hp = 0;
+    triggerDeath(ball2);
+  }
+  toggleDebug();
+}
+
+// 💀 AUTO LOSE
+function debugAutoLose(){
+  if(ball1 && !ball1.dead){
+    ball1.hp = 0;
+    triggerDeath(ball1);
+  }
+  toggleDebug();
+}
+
+// ⏫ FLOOR JUMP
+function debugFloorJump(){
+
+  let val = parseInt(document.getElementById("floorInput").value);
+  if(isNaN(val)) return;
+
+  towerIndex = Math.max(0, val - 1);
+
+  saveTowerProgress();
+
+  alert("Jumped to floor " + val);
+
+  toggleDebug();
+}
+
+// ❤️ UNLIMITED HP
+function debugUnlimitedHP(){
+  if(ball1){
+    ball1.hp = 9999;
+  }
+  toggleDebug();
+}
+
+// 🧱 RESET TOWER
+function debugResetTower(){
+  localStorage.removeItem("towerSave");
+  alert("Tower reset");
+  toggleDebug();
+}
+
+// 👤 RESET PROFILE
+function debugResetProfile(){
+  localStorage.removeItem("profileSave");
+  alert("Profile reset");
+  toggleDebug();
+}
+
+function getTowerClears(){
+  return parseInt(localStorage.getItem("profile_towerClears") || 0);
+}
 
   function showTowerClearPopup(){
 
@@ -1533,6 +1861,14 @@ saveProfileBtn.onclick = () => {
   saveProfile();
   profileBox.style.display = "none";
 };
+
+function saveAura(){
+  localStorage.setItem("equippedAura", equippedAura);
+}
+
+function loadAura(){
+  equippedAura = localStorage.getItem("equippedAura");
+}
 
 function saveTowerProgress(){
   const data = {
@@ -2824,6 +3160,28 @@ if(fusionMode){
 ball1 = new Ball(profile1, ball1X, ball1Y, 3 * GAME_SPEED, 2 * GAME_SPEED);
 ball2 = new Ball(profile2, ball2X, ball2Y, -3 * GAME_SPEED, -2 * GAME_SPEED);
 
+if(equippedAura){
+  let aura = AURAS.find(a => a.id === equippedAura);
+
+  if(aura){
+
+    if(aura.dmgReduce){
+      ball1.damageReduction = (ball1.damageReduction || 0) + aura.dmgReduce;
+    }
+
+    if(aura.dmgTaken){
+      ball1.extraDamageTaken = aura.dmgTaken;
+    }
+
+    if(aura.shield){
+      ball1.auraShieldUsed = false;
+    }
+
+    ball1.auraData = aura;
+  }
+}
+
+
 // ⭐ APPLY TOWER HP CARRY (ONLY CURRENT HP, NOT MAXHP)
 if(towerMode){
 
@@ -3131,6 +3489,29 @@ function formatTime(totalFrames){
   );
 }
 
+function drawAura(ball){
+
+  if(!ball.auraData || ball.isInvisible) return;
+
+  const img = auraImages[ball.auraData.id];
+  if(!img || !img.complete) return;
+
+  let drawHeight = ball.radius * 3.5;
+  let drawWidth = drawHeight * (img.width / img.height);
+
+  ctx.globalAlpha = 0.9;
+
+  ctx.drawImage(
+    img,
+    ball.x - drawWidth / 2,
+    ball.y - drawHeight / 2,
+    drawWidth,
+    drawHeight
+  );
+
+  ctx.globalAlpha = 1;
+}
+
 function checkHit(a,d){
 if(!a || !d) return;
 if(a.team === d.team) return; 
@@ -3151,9 +3532,32 @@ if(d.team === 1 && towerMode){
   dmg -= towerBuffs.damageReduction;
 }
 
+if(a.team === 1 && equippedAura){
+
+  let aura = AURAS.find(a => a.id === equippedAura);
+
+  if(aura){
+    if(aura.atk){
+      dmg += aura.atk;
+    }}}
+   
 
 // prevent zero/negative damage
 dmg = Math.max(0.5, dmg);
+
+
+
+// damage reduction
+if(d.damageReduction){
+  dmg -= d.damageReduction;
+}
+
+// extra damage taken
+if(d.extraDamageTaken){
+  dmg += d.extraDamageTaken;
+}
+
+if(dmg < 0) dmg = 0;
 
 // 🎲 GAMBLE LOGIC
 if(hasName(a.profile, "Gamble")) {
@@ -3210,6 +3614,14 @@ if(hasName(d.profile, "Taurus") && d.isTaurusStance){
   d.twin.stamina = d.stamina;
 }
 else{
+
+  // 🛡️ AURA SHIELD (NULLIFY FIRST REAL DAMAGE)
+  if(dmg > 1 && d.auraShieldUsed === false){
+    d.auraShieldUsed = true;
+    dmg = 0;
+    createDamageText(d.x, d.y, "BLOCK", "gray");
+  }
+
   d.hp -= dmg;
   d.hp = Math.max(0, d.hp);
 
@@ -3304,6 +3716,14 @@ if(d.isGemini && d.twin){
   d.twin.stamina = d.stamina;
 }
 else{
+
+  // 🛡️ AURA SHIELD (NULLIFY FIRST REAL DAMAGE)
+  if(dmg > 0 && d.auraShieldUsed === false){
+    d.auraShieldUsed = true;
+    dmg = 0;
+    createDamageText(d.x, d.y, "BLOCK", "gray");
+  }
+
   d.hp -= dmg;
   d.hp = Math.max(0, d.hp);
 
@@ -3889,6 +4309,13 @@ clones.forEach(c => {
   if(c.radius > 0) c.draw();
 });
 
+drawAura(ball1);
+drawAura(ball2);
+
+for(let c of clones){
+  drawAura(c);
+}
+
 projectiles.forEach(p=>p.draw());
 // Radial Gravity Pull mechanic
 if(!gameOver && ball1 && ball2){
@@ -3939,7 +4366,7 @@ if(hitFlash > 0){
 
 drawDamageTexts(); updateUI(); ctx.restore(); checkStaminaWin(); requestAnimationFrame(loop);  }
 loop();
-
+loadAura();
 loadTowerProgress();
 
 </script></body></html>
