@@ -1216,11 +1216,16 @@ function renderAuraList(){
       div.appendChild(lock);
     } else {
       div.onclick = ()=>{
-        equippedAura = a.id;
-        saveAura();
-        renderAuraList();
-      };
-    }
+  if(equippedAura === a.id){
+    equippedAura = null; // deselect
+  } else {
+    equippedAura = a.id; // select
+  }
+
+  saveAura();
+  renderAuraList();
+};
+}
 
     list.appendChild(div);
   }
