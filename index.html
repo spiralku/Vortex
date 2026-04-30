@@ -3550,6 +3550,10 @@ function drawAura(ball){
 }
 
 function checkHit(a,d){
+  if(a.owner){
+  a.profile = {...a.owner.profile};
+  
+}
 if(!a || !d) return;
 if(a.team === d.team) return; 
 // ❌ Gemini twins cannot hit each other
