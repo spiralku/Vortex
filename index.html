@@ -1986,7 +1986,15 @@ document.getElementById("continueText").innerHTML = text;
 class Projectile{
 constructor(x,y,vx,vy,owner,size,damage){
 this.x=x;this.y=y;this.vx=vx;this.vy=vy;this.r=size||10;this.owner=owner;
-this.profile={damage:damage||5,name:"Projectile",onHit(){}};
+this.profile = {
+  damage: damage || 5,
+  name: "Projectile",
+  onHit: (a, d) => {
+    if(this.owner && this.owner.profile && this.owner.profile.onHit){
+      this.owner.profile.onHit(this.owner, d);
+    }
+  }
+};
 this.hitCooldown=0;
 this.getSpikeTips = () => [{x:this.x, y:this.y}];
 this.color = owner.color;
