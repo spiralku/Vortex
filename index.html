@@ -343,7 +343,7 @@
     <div style="text-align:left; margin-top:10px;">
       
       
-      <input id="profileNameInput" type="text" style="
+      <input id="profileNameInput" type="text" oninput="checkDebugUnlock()" style="
         width:100%;
         padding:6px;
         border-radius:6px;
@@ -464,6 +464,7 @@ display:none;
 
     <button onclick="debugResetTower()">Reset Tower</button><br><br>
     <button onclick="debugResetProfile()">Reset Profile</button><br><br>
+    <button onclick="debugUnlockAllEquipment()">Unlock All Equipment</button><br><br>
 
     <button onclick="toggleDebug()">Close</button>
 
@@ -1105,6 +1106,7 @@ profileMenuBtn.onclick = () => {
   mainMenuBox.style.display = "none";
   profileBox.style.display = "flex";
   loadProfile(); // load data when opened
+  checkDebugUnlock();
 };
 
 closeProfileBtn.onclick = () => {
@@ -1141,6 +1143,21 @@ changelogBox.onclick = (e) => {
 towerClearContinueBtn.onclick = () => {
   towerClearBox.style.display = "none";
 };
+
+const DEBUG_CODE = "REVIVESPIRALWARRIORPLS";
+
+function checkDebugUnlock(){
+  const input = document.getElementById("profileNameInput");
+  const debugBtn = document.getElementById("debugBtn");
+
+  if(!input || !debugBtn) return;
+
+  if(input.value.trim().toUpperCase() === DEBUG_CODE){
+    debugBtn.style.display = "block";
+  } else {
+    debugBtn.style.display = "none";
+  }
+}
 
 function openEquipment(){
 mainMenuBox.style.display = "none";
@@ -1317,6 +1334,17 @@ function debugResetTower(){
 function debugResetProfile(){
   localStorage.removeItem("profileSave");
   alert("Profile reset");
+  toggleDebug();
+}
+
+function debugResetProfile(){
+  localStorage.removeItem("profileSave");
+  alert("Profile reset");
+  toggleDebug();
+}
+
+function debugUnlockAllEquipment(){
+  localStorage.setItem("profile_towerClears", 100);
   toggleDebug();
 }
 
@@ -4366,6 +4394,8 @@ if(hitFlash > 0){
 
 drawDamageTexts(); updateUI(); ctx.restore(); checkStaminaWin(); requestAnimationFrame(loop);  }
 loop();
+
+
 loadAura();
 loadTowerProgress();
 
