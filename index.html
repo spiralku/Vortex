@@ -6,7 +6,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-K13MXT3FFT');
+  gtag('config', 'G-x');
 </script>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Vortex Warrior</title>
@@ -380,7 +380,11 @@
       border-radius: 12px;
       background: rgba(0,0,0,0.35);
     ">
-    
+    <h3>Version 1.2.1</h3>
+      <ul>
+        <li>Added 6 Zodiac characters.</li>
+        <li>Bug fixes.</li>
+      </ul>
       <h3>Version 1.2.0</h3>
       <ul>
         <li>Stamina system introduced.</li>
@@ -602,7 +606,8 @@ const PROFILES = {
   Shotgun:{name:"Shotgun",color:"#333", altcolor:"grey", ringcolor:"saddlebrown", altradius:15, radius:40,spikeLength:0,spikes:1,rotateSpikes:true, projSize:5, projDamage:4, maxHp:100,damage:1,description:"Shoots 10 bullets every 3s",onHit(){}},
 Switch:{name:"Switch",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"lime", altcolor:"mediumaquamarine", ringcolor:"mediumturquoise", altradius:15, maxHp:100,damage:3,description:"Swap position on hit",onHit(a,d){let tx=a.x,ty=a.y;a.x=d.x;a.y=d.y;d.x=tx;d.y=ty;}},
 Thorn:{name:"Thorn",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"olivedrab", altcolor:"darkgreen", ringcolor:"darkgreen", altradius:15, maxHp:100,damage:4,description:"Gain spikes on interval",onHit(a){a.profile.spikes=Math.max(0,a.profile.spikes-1);}},
-Pyro:{name:"Pyro",radius:40,spikeLength:20,spikes:2,rotateSpikes:true,color:"orangered", altcolor:"yellow", ringcolor:"crimson", altradius:15, maxHp:100,damage:4,tickDamage:1,tickCount:3,tickDelay:1000,description:"Burns enemy 3x after hit",onHit(a,d){let dmg=a.profile.tickDamage||1,count=a.profile.tickCount||3,delay=a.profile.tickDelay||1000;setTimeout(()=>{for(let i=0;i<count;i++)setTimeout(()=>{if(!d.dead){d.hp-=dmg;
+Pyro:{name:"Pyro",radius:40,spikeLength:20,spikes:2,rotateSpikes:true,color:"orangered", altcolor:"yellow", ringcolor:"crimson", altradius:15, maxHp:100,damage:4,tickDamage:1,tickCount:3,tickDelay:1000,description:"Burns enemy 3x after hit",onHit(a,d){let dmg=a.profile.tickDamage||1,count=a.profile.tickCount||3,delay=a.profile.tickDelay||1000;setTimeout(()=>{for(let i=0;i<count;i++)setTimeout(()=>{
+if(!d.dead){d.hp-=dmg;
 if(d.hp <= 0){
   d.hp = 0;
 
@@ -614,7 +619,8 @@ if(d.hp <= 0){
 createDamageText(d.x,d.y,dmg,a.color);}},i*a.profile.tickDelay);},500);}},
 Drill:{name:"Drill",radius:40,spikeLength:30,spikes:1,rotateSpikes:true,color:"lightgrey",maxHp:100,damage:2,description:"Strikes through enemy body",onHit(){},},
 Shockwave: {name:"Shockwave", color:"cyan", altcolor:"deepskyblue", ringcolor:"deepskyblue", altradius:15, radius:40, spikeLength:20, spikes:0, rotateSpikes:true,maxHp:100, damage:5, description:"Pulsing wave around you",areaRadius:100, onHit(a,d){},},
-Mimic:{name:"Mimic",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"white", altcolor:"darkgrey", ringcolor:"aliceblue", altradius:15, maxHp:100,damage:4,description:"Copy enemy on hit",onHit(a,d){
+Mimic:{name:"Mimic",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"white", altcolor:"darkgrey", ringcolor:"aliceblue", altradius:15, maxHp:100,damage:4,description:"Copy enemy on hit",
+onHit(a,d){
 if(hasName(d.profile,"Mimic")) return;
 
   // Save original (only once)
@@ -625,6 +631,8 @@ if(hasName(d.profile,"Mimic")) return;
   a.color = d.color;
   a.radius = d.radius;
   a.baseSpeed = d.baseSpeed;
+
+
 
   // Start timer (10 sec = 600 frames)
   a.mimicTimer = 300;
@@ -637,7 +645,7 @@ Executioner:{name:"Executioner",radius:40,spikeLength:20,spikes:1,rotateSpikes:t
 
 Healer:{name:"Healer",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"lime", altcolor:"green", ringcolor:"limegreen", altradius:15, maxHp:100,damage:4,description:"Constantly regenerate HP",onHit(){}},
 Revive:{name:"Revive",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"gold", altcolor:"orangered", ringcolor:"orange", altradius:15, maxHp:100,damage:5,description:"Revive once",onHit(){}},
-Freeze:{name:"Freeze",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"lightskyblue", altcolor:"deepskyblue", ringcolor:"lightblue", altradius:15, maxHp:100,damage:5,description:"Freeze enemy",onHit(a,d){d.freezeT=120;}},
+Cryo:{name:"Cryo",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"lightskyblue", altcolor:"deepskyblue", ringcolor:"lightblue", altradius:15, maxHp:100,damage:5,description:"Freeze enemy",onHit(a,d){ createDamageText(d.x, d.y, "FREEZE", a.profile.color); d.freezeT=120;}},
 Collapse:{name:"Collapse",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"#333", altcolor:"white", ringcolor:"darkgrey", altradius:15, maxHp:100,damage:5,description:"Arena shrinks on hit",onHit(){
   if(canvas.width>200 && canvas.height>200){
     canvas.width-=20;
@@ -815,6 +823,13 @@ Libra:{
     }
   }
 },
+Aquarius: { name:"Aquarius", color:"#4fc3f7", altcolor:"#00bfff", ringcolor:"#1e90ff", altradius:15, radius:40, spikeLength:20, spikes:1, rotateSpikes:true, maxHp:100, damage:4, description:"Repels projectiles and deal 1 damage" , onHit(){} },
+Capricorn: { name:"Capricorn", color:"#8d6e63", altcolor:"#5d4037", ringcolor:"#4e342e", altradius:15, radius:40, spikeLength:20, spikes:1, rotateSpikes:true, maxHp:100, damage:3, description:"Gain +0.5 damage on wall. Reset on hit or taking hit" , onHit(){} },
+Leo: { name:"Leo", color:"#ff9800", altcolor:"#ff5722", ringcolor:"#bf360c", altradius:15, radius:40, spikeLength:20, spikes:1, rotateSpikes:true, maxHp:100, damage:1, description:"Spawn fire zones that burn enemies", onHit(){} },
+Virgo:{name:"Virgo",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"#e6d7a3",altcolor:"#cbb67a",ringcolor:"#a38b4f",altradius:15,maxHp:100,damage:4,description:"Swap with enemy upon taking a hit",onHit(a,d){}},
+fakeVirgo:{name:"fakeVirgo",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"#e6d7a3",altcolor:"#cbb67a",ringcolor:"#a38b4f",altradius:15,maxHp:100,damage:4,hidden:true,description:"Fake Virgo (no ability)",onHit(){}},
+Cancer:{name:"Cancer",radius:40,spikeLength:20,spikes:2,rotateSpikes:true,color:"#e53935",altcolor:"#ff7043",ringcolor:"#8e0000",altradius:15,maxHp:100,damage:3,description:"50% chance to grab enemy and dealing damage",onHit(a,d){if(a.cancerCooldown>0)return; if(Math.random()>0.5)return;if(a.isGrabbing||d.isGrabbed)return;a.isGrabbing=true;d.isGrabbed=true;a.grabTarget=d;d.grabSource=a;a.grabTimer=180;a.grabTick=60;a.cancerCooldown=300;createDamageText(d.x,d.y,"GRAB",a.color);}},
+Pisces:{name:"Pisces",color:"#4fc3f7",altcolor:"#0288d1",ringcolor:"#01579b",altradius:15,radius:40,spikeLength:20,spikes:1,rotateSpikes:true,maxHp:100,damage:2,description:"Creates 2 teleport zones. Heal self, damage enemy.",onHit(){}},
 };
 
 const TOWER_PRESET = [
@@ -825,10 +840,10 @@ const TOWER_PRESET = [
   ["Healer"],
   ["Charger"],
   ["Switch"],
-  ["Freeze"],
+  ["Cryo"],
   ["Rewind"],
   ["Sword", "Shield"],                // Floor 10
-["Shotgun"],
+["Shooter"],
 ["Mimic"],
 ["Phaser"],
 ["Expand"],
@@ -837,7 +852,7 @@ const TOWER_PRESET = [
 ["Sagittarius"],
 ["Taurus"],
 ["Gemini"],
-["Scorpio", "Tornado"], // Floor 20
+["Clone", "Shooter"], // Floor 20
 ["Combo"],
 ["Dasher"],
 ["Trinity"],
@@ -846,78 +861,78 @@ const TOWER_PRESET = [
 ["Thorn"],
 ["Tornado"],
 ["Mimic"],
-["Libra"],
-["Thorn","Shotgun"], // Floor 30
+["Pyro"],
+["Combo","Aries"], // Floor 30
 ["Collapse"],
 ["Equalizer"],
-["Shooter"],
-["Vampire"],
-["Combo","Dasher"],
-["Executioner"],
 ["Scorpio"],
+["Vampire"],
+["Collapse","Dasher"],
+["Executioner"],
+["Libra"],
 ["Shockwave"],
 ["Counter"],
-["Collapse","Aries"], // Floor 40
+["Vampire","Thorn"], // Floor 40
 ["Drill"],
-["Pyro"],
+["Shotgun"],
 ["Mimic"],
 ["Invisible"],
 ["Shield","Healer"],
 ["Gamble"],
 ["Berserker"],
-["Taurus"],
-["Trinity"],
-["Libra","Invisible","Thorn"], // Floor 50
+["Cancer"],
+["Cyro"],
+["Invisible","Vampire","Sagittarius"], // Floor 50
 ["Shield"],
-["Counter","Collapse"],
-["Rewind"],
+["Executioner","Cancer"],
+["Aquarius"],
 ["Shotgun", "Tornado"],
 ["Gemini"],
-["Freeze","Pyro"],
+["Cryo","Pyro"],
 ["Mimic"],
-["Shooter","Clone"],
-["Dasher"],
-["Aries","Drill","Builder"], // Floor 60
-["Sword"],                         
-  ["Shield","Revive"],              
-  ["Dasher"],                       
-  ["Shooter","Builder"],            
-  ["Vampire"],                      
-  ["Freeze","Counter"],             
-  ["Mimic"],                        
-  ["Shotgun","Tornado"],            
+["Drill","Builder"],
+["Sword"],
+["Aquarius","Phaser","Shield"], // Floor 60
+["Thorn"],                         
+  ["Mimic","Revive"],              
+  ["Equalizer"],                       
+  ["Sagittarius","Builder"],            
+  ["Capricorn"],                      
+  ["Cryo","Thorn"],             
+  ["Clone"],                        
+  ["Pyro","Shotgun"],            
   ["Charger"],                      
-  ["Combo","Dasher","Berserker"],   // Floor 70 
-  ["Shield"],                       
-  ["Rewind","Healer"],              
-  ["Aries"],                        
-  ["Gemini","Clone"],              
-  ["Libra"],                        
-  ["Freeze","Pyro"],                
-  ["Gemini"],                       
-  ["Builder","Collapse"],           
-  ["Mimic"],                     
-  ["Trinity","Thorn","Shotgun"],    // Floor 80 
-  ["Sword"],                        
-  ["Counter","Shield"],             
-  ["Dasher"],                       
-  ["Sagittarius","Tornado"],        
-  ["Vampire"],                      
-  ["Freeze","Builder"],             
-  ["Invisible"],                    
-  ["Shockwave","Pyro"],               
+  ["Builder","Capricorn","Sword"],   // Floor 70 
+  ["Mimic"],                       
+  ["Mimic"],              
   ["Mimic"],                        
-  ["Shield","Berserker","Charger"], // Floor 90
+  ["Mimic"],              
+  ["Mimic"],                        
+  ["Mimic"],                
+  ["Mimic"],                       
+  ["Mimic"],           
+  ["Mimic"],                     
+  ["Virgo"],    // Floor 80 
+  ["Pisces"],                        
+  ["Counter","Shield"],             
+  ["Expand"],                       
+  ["Pyro","Aquarius"],        
+  ["Cancer"],                      
+  ["Taurus","Invisible"],             
+  ["Aries"],                    
+  ["Shockwave","Pyro"],               
+  ["Leo"],                        
+  ["Counter","Expand","Sagittarius"], // Floor 90
   ["Shield","Healer","Taurus"],     
-  ["Dasher","Combo","Clone"],       
-  ["Pyro","Executioner","Aries"], 
-  ["Shotgun","Sagittarius","Builder"], 
-  ["Vampire","Berserker","Thorn"],  
-  ["Rewind","Libra","Counter"],     
-  ["Collapse","Tornado","Shockwave"], 
-  ["Gemini","Clone","Combo"],       
-  ["Invisible","Trinity","Executioner"],
-  ["Freeze","Shockwave","Executioner"]  // 100  FINAL BOSS
+  ["Tornado","Pyro","Leo"],       
+  ["Capricorn","Aries","Collapse"], 
+  ["Pisces","Cancer","Shield"], 
+  ["Vampire","Scorpio","Thorn"],  
+  ["Rewind","Libra","Aquarius"],     
+  ["Phaser","Virgo","Shockwave"], 
+  ["Sagittarius","Shotgun","Builder"],       
+  ["Invisible","Pisces","Charger"],
+  ["Clone","Pyro","Executioner"]  // 100  FINAL BOSS
   // keep going... more floor will added later
 ];
 
@@ -987,6 +1002,7 @@ let gameStarted=false, hitPause=0, gameOver=false;
 let damageTexts=[];
 let walls = [];
 let tornadoes = [];
+let piscesZones = [];
 let projectiles=[];
 let gravityCooldown = 180; // 3 sec at 60fps
 let gravityActive = 0;      // counts down the 1 sec active time
@@ -1434,7 +1450,7 @@ function openMenu(t){
   selectingTarget = t;
   menu.innerHTML = "";
 
-  let keys = Object.keys(PROFILES);
+  let keys = Object.keys(PROFILES).filter(k => !PROFILES[k].hidden);
 
   // 🗼 TOWER MODE → SHOW FLOOR LIST (READ ONLY)
   if(towerMode && t === 2){
@@ -1467,6 +1483,7 @@ function openMenu(t){
       }
 
       menu.appendChild(d);
+      
     }
 
     return;
@@ -2039,8 +2056,8 @@ if(ball.isInvisible) return;
     let t = i / ball.trail.length;
 
     // 🔥 thickness: thicker near ball, thinner behind
-    let width = ball.radius * (0.15 + t * 0.25);
-    let width2 = ball.radius * (0.05 + t * 0.15);
+    let width = ball.radius * (0.15 + t * 0.35);
+    let width2 = ball.radius * (0.05 + t * 0.25);
 
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
@@ -2048,10 +2065,10 @@ if(ball.isInvisible) return;
 
     // 🔥 orange → yellow gradient feel
     let r = 255;
-    let g = 170; // goes toward yellow
+    let g = 200; // goes toward yellow
     let b = 0;
 
-    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${t * 0.9})`;
+    ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${t * 0.8})`;
     ctx.lineWidth = width;
     
     ctx.stroke();
@@ -2059,7 +2076,7 @@ if(ball.isInvisible) return;
     ctx.beginPath();
     ctx.moveTo(p1.x, p1.y);
     ctx.lineTo(p2.x, p2.y);
-    ctx.strokeStyle = "rgba(255,200,0,0.25)";
+    ctx.strokeStyle = "rgba(255,150,0,0.3)";
     ctx.lineWidth = width2;
     
     ctx.stroke();
@@ -2095,7 +2112,17 @@ class Ball{
     this.baseSpeed=Math.hypot(vx,vy);
     this.originalSpeed = this.baseSpeed;
     this.hp=p.maxHp; this.hitCooldown=0; this.dead=false; this.deathTimer=0;
-    // ⭐ STAMINA
+  // ♋ Cancer system
+this.cancerCooldown = 0;
+this.isGrabbing = false;
+this.isGrabbed = false;
+this.grabTarget = null;
+this.grabSource = null;
+this.grabTimer = 0;
+this.grabTick = 0;
+this.piscesCooldown = 0;
+
+  // ⭐ STAMINA
 this.maxStamina = p.stamina || 100;
 this.stamina = this.maxStamina;
 this.spikeRotation = 0;
@@ -2193,7 +2220,8 @@ ctx.beginPath();
 ctx.arc(this.x, this.y, this.radius, 0, Math.PI*2);
 ctx.fillStyle =
   (this.dead && Math.floor(this.deathTimer/5)%2===0) ||
-  (this.flickerTimer > 0 && Math.floor(this.flickerTimer/3)%2===0)
+  (this.flickerTimer > 0 && Math.floor(this.flickerTimer/3)%2===0) ||
+  (hasName(this.profile,"fakeVirgo") && Math.floor(Date.now()/100)%2===0)
     ? "white"
     : this.color;
 ctx.fill();
@@ -2348,6 +2376,7 @@ ctx.restore();
     ctx.stroke();
   }
 
+
   // 🔺 Trinity init (keep your logic)
   if(hasName(this.profile,"Trinity") && !this.dead && !this.TrinityStart){
     this.form = "attacker";
@@ -2369,6 +2398,40 @@ ctx.restore();
 }
 
   update(){
+  
+ piscesZones.forEach(z=>{
+  if(z.ripple > 0) z.ripple--;
+});
+  
+  if(this.piscesCooldown > 0){
+  this.piscesCooldown--;
+}
+  // 🔥 BURN DAMAGE SYSTEM
+if(this.burnTicks > 0){
+
+  this.burnTimer = (this.burnTimer || 0) + 1;
+
+  if(this.burnTimer >= 30){
+    this.burnTimer = 0;
+    this.burnTicks--;
+
+    let dmg = 1;
+    this.hp -= dmg;
+
+    if(this.hp <= 0){
+      this.hp = 0;
+
+      if(this.isClone){
+        clones.splice(clones.indexOf(this), 1);
+      } else {
+        triggerDeath(this);
+      }
+    }
+
+    createDamageText(this.x, this.y, dmg, "orange");
+  }
+}
+  
   if(this.staminaKOStarted === true && !this.dead){
   const t = (performance.now() - this.staminaKOTimer) / 1000;
   const strength = 0.2 + t * 0.18;
@@ -2409,19 +2472,27 @@ if(!gameOver && !this.dead){
     this.history.shift(); // keep last 2 sec
   }
 }
+
+this.capBonus = this.capBonus || 0;
+
     if(this.freezeT>0){
   this.freezeT--;
   return; // stops movement + actions
 }
-    if(this.mimicTimer){
-  this.mimicTimer--;
-  if(this.mimicTimer<=0){
+    if(this.mimicTimer !== undefined){
+
+  if(this.mimicTimer !== -1){
+    this.mimicTimer--;
+  }
+
+  if(this.mimicTimer === 0){
     this.profile = {...this.originalProfile};
     this.color = this.profile.color;
     this.radius = this.profile.radius;
     this.baseSpeed = this.originalSpeed;
-this.hitMap = {};
 
+    this.originalProfile = null;
+    this.hitMap = {};
   }
 }
     if(this.rush){
@@ -2448,7 +2519,7 @@ if(!this.trail){
 this.trail.push({ x: this.x, y: this.y });
 
 // ⭐ LIMIT SIZE
-if(this.trail.length > 30){
+if(this.trail.length > 20){
   this.trail.shift();
 }
     if(this.profile.rotateSpikes){
@@ -2487,7 +2558,9 @@ if(this.trail.length > 30){
 // LEFT
 if(this.x-this.radius<10){ 
   this.x=this.radius+10; 
-  
+  if(hasName(this.profile,"Capricorn")){
+    this.capBonus = Math.min(this.capBonus + 0.2, 8);
+}
 spawnSparks(this.x, this.y, 3);
   // ⭐ Aries slam
   if(this.ariesMark > 0){
@@ -2517,7 +2590,9 @@ spawnSparks(this.x, this.y, 3);
 // RIGHT
 if(this.x+this.radius>canvas.width-10){ 
   this.x=canvas.width-10-this.radius; 
-  
+  if(hasName(this.profile,"Capricorn")){
+    this.capBonus = Math.min(this.capBonus + 0.2, 8);
+}
 spawnSparks(this.x, this.y, 3);
   // ⭐ Aries slam
   if(this.ariesMark > 0){
@@ -2547,7 +2622,9 @@ spawnSparks(this.x, this.y, 3);
 // TOP
 if(this.y-this.radius<10){ 
   this.y=this.radius+10; 
-  
+  if(hasName(this.profile,"Capricorn")){
+    this.capBonus = Math.min(this.capBonus + 0.2, 8);
+}
 spawnSparks(this.x, this.y, 3);
   // ⭐ Aries slam
   if(this.ariesMark > 0){
@@ -2577,7 +2654,9 @@ spawnSparks(this.x, this.y, 3);
 // BOTTOM
 if(this.y+this.radius>canvas.height-10){ 
   this.y=canvas.height-10-this.radius; 
-  
+  if(hasName(this.profile,"Capricorn")){
+    this.capBonus = Math.min(this.capBonus + 0.2, 8);
+}
 spawnSparks(this.x, this.y, 3);
   // ⭐ Aries slam
   if(this.ariesMark > 0){
@@ -2612,6 +2691,53 @@ if(hasName(this.profile,"Thorn")&&!this.dead){
   }
 }
 
+// ♓ Pisces teleport zones
+if(piscesZones.length){
+
+  for(let z of piscesZones){
+
+    let dx = this.x - z.x;
+    let dy = this.y - z.y;
+    let dist = Math.hypot(dx, dy);
+
+    if(dist <= z.r + this.radius && this.piscesCooldown <= 0){
+
+      // prevent spam teleport
+      if(this.lastPiscesTP && this.lastPiscesTP === z.pairId) continue;
+
+      // find pair
+      let target = piscesZones.find(p => p.pairId === z.pairId && p !== z);
+      if(!target) continue;
+
+      // teleport
+      this.x = target.x;
+      this.y = target.y;
+      z.ripple = 30;        // source zone ripple
+target.ripple = 30;   // destination ripple
+this.piscesCooldown = 120; // ~0.5 second
+
+      this.lastPiscesTP = z.pairId;
+
+     // if(hasName(this.profile,"Pisces")){if(this.hp<this.profile.maxHp){this.hp+=1;createHealText(this.x,this.y,1,"green");}}else{let dmg=1;if(!this.dead){this.hp-=dmg;if(this.hp<=0){this.hp=0;if(this.isClone){clones.splice(clones.indexOf(this),1);}else{triggerDeath(this);}}createDamageText(this.x,this.y,dmg,this.color);}}
+
+      break;
+    }
+  }
+
+  // reset flag when outside all zones
+  let insideAny = piscesZones.some(z=>{
+    let dx = this.x - z.x;
+    let dy = this.y - z.y;
+    return Math.hypot(dx,dy) <= z.r;
+  });
+
+  if(!insideAny){
+    this.lastPiscesTP = null;
+  }
+}
+
+
+
 if(this.hitMap){
   for(let k in this.hitMap){
     this.hitMap[k]--;
@@ -2619,6 +2745,8 @@ if(this.hitMap){
   }
 }
 }
+    
+    
     
 if(
   (hasName(this.profile,"Shooter")||
@@ -2740,6 +2868,107 @@ if(hasName(this.profile,"Shockwave") && !this.dead && !gameOver){
     }
 
 }
+
+// 🌊 AQUARIUS WAVE (PROJECTILE REPEL)
+if(hasName(this.profile,"Aquarius") && !this.dead && !gameOver){
+
+    this.aquaRadius = this.aquaRadius || this.radius;
+    this.aquaMax = this.radius + 70;
+    this.aquaSpeed = 3;
+    this.aquaActive = this.aquaActive || false;
+    this.aquaShrinking = this.aquaShrinking || false;
+    this.aquaCooldown = this.aquaCooldown || 0;
+
+    // ✅ 1 second cooldown (~60 frames)
+    if(!this.aquaActive && this.aquaCooldown <= 0){
+    this.aquaActive = true;
+    this.aquaShrinking = false;
+    this.aquaRadius = this.radius;
+    this.aquaCooldown = 0;
+
+    // ✅ ADD THIS
+    this.aquaWaveId = (this.aquaWaveId || 0) + 1;
+}
+
+    if(this.aquaActive){
+        this.aquaRadius += this.aquaSpeed;
+        if(this.aquaRadius >= this.aquaMax){
+            this.aquaActive = false;
+            this.aquaShrinking = true;
+        }
+    } 
+    else if(this.aquaShrinking){
+        this.aquaRadius -= this.aquaSpeed;
+        if(this.aquaRadius <= this.radius){
+            this.aquaRadius = this.radius;
+            this.aquaShrinking = false;
+        }
+    } 
+    else {
+        this.aquaCooldown--;
+    }
+
+    // 🎨 draw wave (simple like arena style)
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.aquaRadius, 0, Math.PI*2);
+    ctx.strokeStyle = "deepskyblue";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // 💥 PROJECTILE REPEL
+    if(this.aquaActive){
+
+        for(let p of projectiles){
+
+            if(!p || p.owner === this) continue;
+
+            let dx = p.x - this.x;
+            let dy = p.y - this.y;
+            let dist = Math.hypot(dx, dy);
+
+            if(dist <= this.aquaRadius){
+
+    // ✅ count each projectile ONCE per wave
+    if(p.lastWaveHit === this.aquaWaveId) continue;
+    p.lastWaveHit = this.aquaWaveId;
+
+    let nx = dx / (dist || 1);
+    let ny = dy / (dist || 1);
+
+    let speed = Math.hypot(p.vx, p.vy);
+
+    p.vx = nx * speed;
+    p.vy = ny * speed;
+
+    // 🌊 instant damage (1 per projectile)
+    let enemy = (this === ball1) ? ball2 : ball1;
+
+    if(enemy && !enemy.dead){
+
+        let dmg = 1;
+        enemy.hp -= dmg;
+
+        if(enemy.hp <= 0){
+            enemy.hp = 0;
+
+            if(enemy.isClone){
+                clones.splice(clones.indexOf(enemy), 1);
+            } else {
+                triggerDeath(enemy);
+            }
+        }
+
+        createDamageText(enemy.x, enemy.y, dmg, "deepskyblue");
+    }
+
+    // push projectile out
+    p.x = this.x + nx * (this.radius + p.r + 2);
+    p.y = this.y + ny * (this.radius + p.r + 2);
+}
+        }
+    }
+}
+
 if(hasName(this.profile, "Trinity") && this.form === "healing"){
   this.healTimer++;
 
@@ -2883,6 +3112,32 @@ if(hasName(this.profile, "Tornado") && !this.dead && !gameOver){
   }
 }
 
+if(hasName(this.profile, "Leo") && !this.dead && !gameOver){
+
+  this.tornadoTimer = this.tornadoTimer || 0;
+  this.tornadoTimer++;
+
+  if(this.tornadoTimer >= 120){ // same timing
+    this.tornadoTimer = 0;
+
+    if(tornadoes.length < 3){
+
+      let size = 40 + Math.random()*40;
+
+      tornadoes.push({
+        x: 20 + Math.random()*(canvas.width-40),
+        y: 20 + Math.random()*(canvas.height-40),
+        radius: size,
+        life: 300,
+        owner: this,
+        isLeo: true,     // ⭐ IDENTIFIER
+        hitMap: {}       // ⭐ TRACK WHO GOT BURNED
+      });
+
+    }
+  }
+}
+
 // ⭐ Aries slam timer
 if(this.ariesMark > 0) this.ariesMark--;
 
@@ -2929,7 +3184,7 @@ if(hasName(this.profile, "Healer")){
 
     if(this.hp < this.profile.maxHp){
       this.hp += 1;
-      createHealText(this.x, this.y, 2, "green");
+      createHealText(this.x, this.y, 1, "green");
     }
 
     this.healTimer = 0;
@@ -2945,6 +3200,112 @@ if(this.stamina <= 0){
     this.vy = 0;
   }
 }
+
+// ♋ CANCER GRAB SYSTEM
+
+// cooldown tick
+if(this.cancerCooldown > 0){
+  this.cancerCooldown--;
+}
+
+// if THIS is grabbing someone
+if(this.isGrabbing && this.grabTarget){
+
+  let target = this.grabTarget;
+
+  // keep slight offset so physics doesn't break
+let dx = target.x - this.x;
+let dy = target.y - this.y;
+let dist = Math.hypot(dx, dy) || 0.001;
+
+// desired distance (sum of radii)
+let minDist = this.radius + target.radius + 5;
+
+// normalize
+dx /= dist;
+dy /= dist;
+
+// place target slightly outside instead of inside
+target.x = this.x + dx * minDist;
+target.y = this.y + dy * minDist;
+
+// sync velocity
+// give slight forward force so they don't stall
+this.vx *= 1.01;
+this.vy *= 1.01;
+
+target.vx = this.vx;
+target.vy = this.vy;
+
+  // timer
+  this.grabTimer--;
+  this.grabTick--;
+
+  // damage every 1 second
+  if(this.grabTick <= 0){
+
+    this.grabTick = 60;
+
+    if(!target.dead){
+      target.hp -= 1;
+
+      if(target.hp <= 0){
+        target.hp = 0;
+
+        if(target.isClone){
+          clones.splice(clones.indexOf(target), 1);
+        } else {
+          triggerDeath(target);
+        }
+      }
+
+      createDamageText(target.x, target.y, 1, this.color);
+    }
+  }
+
+  // end grab
+  if(this.grabTimer <= 0){
+
+  this.isGrabbing = false;
+this.hitCooldown = 60; // ⛔ disable attacking for 1s
+  if(target){
+
+    // 🔥 calculate direction between them
+    let dx = target.x - this.x;
+    let dy = target.y - this.y;
+    let dist = Math.hypot(dx, dy) || 0.001;
+
+    dx /= dist;
+    dy /= dist;
+
+    // 💥 push BOTH away from each other
+    let pushForce = 10; // adjust this
+
+    this.vx -= dx * pushForce;
+    this.vy -= dy * pushForce;
+
+    target.vx += dx * pushForce;
+    target.vy += dy * pushForce;
+
+    // cleanup flags
+    target.isGrabbed = false;
+    target.grabSource = null;
+  }
+
+  this.grabTarget = null;
+}
+}
+
+// if THIS is being grabbed → disable movement
+if(this.isGrabbed && this.grabSource){
+
+  let source = this.grabSource;
+
+  // only sync velocity, NOT position
+  this.vx = source.vx;
+  this.vy = source.vy;
+}
+
     // Normalize speed
     this.normalizeSpeed();
     if(this.hitCooldown>0) this.hitCooldown--;
@@ -3023,7 +3384,9 @@ if(hasName(ball.profile, "Phaser")) return;
 
       ball.x += ball.vx;
       ball.y += ball.vy;
-      
+      if(hasName(this.profile,"Capricorn")){
+    this.capBonus = Math.min(this.capBonus + 0.2, 8);
+}
 collideSfx.play();
       spawnSparks(ball.x, ball.y, 3);
     }
@@ -3074,24 +3437,49 @@ function applyTornadoForce(ball){
 
     if(dist < t.radius){
 
+      // 🔥 ===== LEO ZONE =====
+      if(t.isLeo){
+
+        // ✅ ensure unique id exists
+        if(ball.id === undefined){
+          ball.id = Math.random();
+        }
+
+        // ✅ only once per zone
+        if(!t.hitMap[ball.id]){
+          t.hitMap[ball.id] = true;
+
+          // apply burn
+          createDamageText(ball.x, ball.y, "BURN", "orange");
+          ball.burnTicks = 3;
+          ball.burnTimer = 0;
+        }
+
+        // ❌ NO movement effect for Leo
+        continue;
+      }
+
+      // 🌪 ===== ORIGINAL TORNADO =====
       let nx = dx / (dist || 1);
       let ny = dy / (dist || 1);
 
       let force = (1 - dist / t.radius);
 
-      let spinStrength = 2.5 * force;
+      let spinStrength =10 * force;
       let px = -ny;
       let py = nx;
 
       ball.vx += px * spinStrength;
       ball.vy += py * spinStrength;
 
-      let pullStrength = 1.2 * force;
+      let pullStrength = 5 * force;
       ball.vx += (-nx) * pullStrength;
       ball.vy += (-ny) * pullStrength;
-
-      ball.vx *= 0.98;
-      ball.vy *= 0.98;
+      
+if(dist < t.radius * 0.3){
+      ball.vx *= 0.3;
+      ball.vy *= 0.3;
+      }
     }
   }
 }
@@ -3170,6 +3558,40 @@ function hasName(profile, name){
   return false;
 }
 
+// ♓ Pisces zones spawn
+function spawnPiscesZones(ball){
+  if(!hasName(ball.profile,"Pisces")) return;
+
+  const margin = 80;
+
+  const zone1 = {
+    x: margin + Math.random() * (canvas.width - margin*2),
+    y: margin + Math.random() * (canvas.height - margin*2),
+    r: 50,
+    pairId: Math.random(),
+    ripple: 0 // ← ADD
+  };
+
+  let zone2;
+let minDist = 250; // minimum distance between zones
+
+do{
+  zone2 = {
+    x: margin + Math.random() * (canvas.width - margin*2),
+    y: margin + Math.random() * (canvas.height - margin*2),
+    r: 50,
+    pairId: zone1.pairId,
+    ripple: 0 // ← ADD
+  };
+
+  let dx = zone2.x - zone1.x;
+  let dy = zone2.y - zone1.y;
+
+} while(Math.hypot(zone2.x - zone1.x, zone2.y - zone1.y) < minDist);
+
+  piscesZones.push(zone1, zone2);
+}
+
 function startGame(){
 gtag('event', 'play_game', {
   event_category: 'game',
@@ -3178,7 +3600,7 @@ gtag('event', 'play_game', {
 startSfx.play(); 
 bgm.volume = 0.5;
 bgm.play().catch(()=>{}); // prevents autoplay error
-  gameOver=false; hitPause=0; damageTexts=[]; projectiles=[]; walls = []; tornadoes = []; clones = []; 
+  gameOver=false; hitPause=0; damageTexts=[]; projectiles=[]; walls = []; tornadoes = []; clones = []; piscesZones = [];
   gameTime = 0;
   canvas.width = ORIGINAL_WIDTH;
 canvas.height = ORIGINAL_HEIGHT;
@@ -3204,7 +3626,9 @@ if(fusionMode){
 }
 ball1 = new Ball(profile1, ball1X, ball1Y, 3 * GAME_SPEED, 2 * GAME_SPEED);
 ball2 = new Ball(profile2, ball2X, ball2Y, -3 * GAME_SPEED, -2 * GAME_SPEED);
-
+// spawn for both players
+spawnPiscesZones(ball1);
+spawnPiscesZones(ball2);
 if(equippedAura){
   let aura = AURAS.find(a => a.id === equippedAura);
 
@@ -3558,7 +3982,8 @@ function drawAura(ball){
 }
 
 function checkHit(a,d){
-  
+// ♋ disable hit during grab
+if(a.isGrabbing || a.isGrabbed || d.isGrabbing || d.isGrabbed) return;
 if(!a || !d) return;
 if(a.team === d.team) return; 
 // ❌ Gemini twins cannot hit each other
@@ -3567,6 +3992,10 @@ if(a.isInvisible || d.isInvisible) return;
   if(!a||!d||a.dead||d.dead||gameOver) return;
   if(a.isRewinding || d.isRewinding) return;
 let dmg = a.profile.damage;
+
+if(hasName(a.profile,"Capricorn")){
+    dmg += a.capBonus || 0;
+}
 
 // ⭐ APPLY FLAT DAMAGE BUFF (ATTACKER SIDE)
 if(a.team === 1 && towerMode){
@@ -3705,9 +4134,54 @@ hitSfx.play();
       if(hasName(d.profile,'Berserker')){d.profile.damage=Math.min(3,d.profile.damage+0.5);}
       if(hasName(d.profile,'Switch')){let t=a.owner?a.owner:a;let tx=t.x,ty=t.y;t.x=d.x;t.y=d.y;d.x=tx;d.y=ty;}
       if(hasName(a.profile,'Drill')){a.hitMap[d.id] = 0;}
+      if(hasName(d.profile,'Virgo')){
+      // only trigger if defender is Virgo
+  if(!hasName(d.profile,"Virgo")) return;
+
+  // 🔁 resolve projectile → real attacker
+  if(hasName(a.profile,"Projectile") && a.owner){
+    a = a.owner;
+  }
+
+  if(hasName(a.profile,"Virgo") || hasName(a.profile,"fakeVirgo")) return;
+
+  if(!d.originalProfile) d.originalProfile = {...d.profile};
+  if(!a.originalProfile) a.originalProfile = {...a.profile};
+
+  d.profile = {...a.profile};
+  d.color = a.color;
+  d.radius = a.radius;
+  d.baseSpeed = a.baseSpeed;
+
+  a.profile = {...PROFILES.fakeVirgo};
+  a.color = PROFILES.fakeVirgo.color;
+  a.radius = PROFILES.fakeVirgo.radius;
+
+  d.mimicTimer = 300;
+  a.mimicTimer = 300;
+
+  createHealText(d.x, d.y, "SWAP", d.color);}
       if(hasName(d.profile,'Clone') && d.hp>0){spawnClone(d);}
     if(hasName(d.profile,'Combo')){d.profile.damage = 2;}
-       if(hasName(d.profile, "Trinity")){
+   if(hasName(a.profile,'Aries')){
+        
+  let original = d.baseSpeed;
+
+  d.baseSpeed = Math.min(d.baseSpeed * 2, d.originalSpeed * 2);
+
+  setTimeout(()=>{
+    d.baseSpeed = d.originalSpeed;
+  }, 500);
+  d.ariesMark = 60;
+  
+}
+ if(hasName(a.profile,"Capricorn")){
+    a.capBonus = 0;
+}
+if(hasName(d.profile,"Capricorn")){
+    d.capBonus = 0;
+}
+   if(hasName(d.profile, "Trinity")){
 
   if(d.form === "attacker"){
     d.form = "defensive";
@@ -3807,6 +4281,33 @@ hitSfx.play();
       if(hasName(d.profile,'Switch')){let t=a.owner?a.owner:a;let tx=t.x,ty=t.y;t.x=d.x;t.y=d.y;d.x=tx;d.y=ty;}
       if(hasName(a.profile,'Drill')){a.hitMap[d.id] = 0;}
       if(hasName(d.profile,'Clone') && d.hp>0){spawnClone(d);}
+if(hasName(d.profile,'Virgo')){
+      // only trigger if defender is Virgo
+  if(!hasName(d.profile,"Virgo")) return;
+
+  // 🔁 resolve projectile → real attacker
+  if(hasName(a.profile,"Projectile") && a.owner){
+    a = a.owner;
+  }
+
+  if(hasName(a.profile,"Virgo") || hasName(a.profile,"fakeVirgo")) return;
+
+  if(!d.originalProfile) d.originalProfile = {...d.profile};
+  if(!a.originalProfile) a.originalProfile = {...a.profile};
+
+  d.profile = {...a.profile};
+  d.color = a.color;
+  d.radius = a.radius;
+  d.baseSpeed = a.baseSpeed;
+
+  a.profile = {...PROFILES.fakeVirgo};
+  a.color = PROFILES.fakeVirgo.color;
+  a.radius = PROFILES.fakeVirgo.radius;
+
+  d.mimicTimer = 300;
+  a.mimicTimer = 300;
+
+  createHealText(d.x, d.y, "SWAP", d.color);}
  if(hasName(a.profile,'Aries')){
         
   let original = d.baseSpeed;
@@ -3815,11 +4316,17 @@ hitSfx.play();
 
   setTimeout(()=>{
     d.baseSpeed = d.originalSpeed;
-  }, 1000);
+  }, 500);
   d.ariesMark = 60;
   
 }
     if(hasName(d.profile,'Combo')){d.profile.damage = 2;}
+if(hasName(a.profile,"Capricorn")){
+    a.capBonus = 0;
+}
+if(hasName(d.profile,"Capricorn")){
+    d.capBonus = 0;
+}
     if(hasName(a.profile, "Trinity")){
 
   if(a.form === "attacker"){
@@ -3997,7 +4504,9 @@ for(let target of targets){
       p.bounceLeft--;
     } else {
     p.team = p.owner.team;
-      checkHit(p, target);
+checkHit(p, target);
+
+
       projectiles.splice(i,1);
       break;
     }
@@ -4340,13 +4849,61 @@ clones.forEach(c=>{
 tornadoes.forEach(t=>{
   ctx.beginPath();
   ctx.arc(t.x, t.y, t.radius, 0, Math.PI * 2);
-  ctx.fillStyle = "rgba(128,0,128,0.2)";
+  ctx.fillStyle = t.isLeo 
+  ? "rgba(255,100,0,0.25)" 
+  : "rgba(128,0,128,0.2)";
   ctx.fill();
 
-  ctx.strokeStyle = "azure";
+  ctx.strokeStyle = t.isLeo ? "orange" : "azure";
   ctx.lineWidth = 2;
   ctx.stroke();
 });
+
+// ♓ Pisces zones
+piscesZones.forEach(z=>{
+
+  // base zone
+  ctx.beginPath();
+  ctx.arc(z.x, z.y, z.r, 0, Math.PI*2);
+  ctx.fillStyle = "rgba(0,180,255,0.4)";
+  ctx.fill();
+  ctx.strokeStyle = "#4fc3f7";
+  ctx.lineWidth = 3;
+  ctx.stroke();
+
+  // 🌊 ripple effect
+  if(z.ripple > 0){
+
+    let progress = z.ripple / 30;
+
+    // outer blue ripple
+ctx.beginPath();
+ctx.arc(
+  z.x,
+  z.y,
+  z.r + (1 - progress) * 25,
+  0,
+  Math.PI * 2
+);
+ctx.strokeStyle = "rgba(0,180,255," + (progress * 0.6) + ")";
+ctx.lineWidth = 10;
+ctx.stroke();
+
+// inner white highlight ripple
+ctx.beginPath();
+ctx.arc(
+  z.x,
+  z.y,
+  z.r + (1 - progress) * 20,
+  0,
+  Math.PI * 2
+);
+ctx.strokeStyle = "rgba(255,255,255," + (progress * 0.8) + ")";
+ctx.lineWidth = 10;
+ctx.stroke();
+  }
+});
+
  if(ball1.radius>0) ball1.draw(); 
 if(ball2.radius>0) ball2.draw(); 
 
@@ -4409,6 +4966,8 @@ if(hitFlash > 0){
     hitColor = "rgba(255,0,0,0.3)";
     }
 }
+
+
 
 drawDamageTexts(); updateUI(); ctx.restore(); checkStaminaWin(); requestAnimationFrame(loop);  }
 loop();
