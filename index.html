@@ -383,6 +383,7 @@
     <h3>Version 1.2.1</h3>
       <ul>
         <li>Added 6 Zodiac characters.</li>
+        <li>Updated Tower list.</li>
         <li>Bug fixes.</li>
       </ul>
       <h3>Version 1.2.0</h3>
@@ -829,7 +830,7 @@ Leo: { name:"Leo", color:"#ff9800", altcolor:"#ff5722", ringcolor:"#bf360c", alt
 Virgo:{name:"Virgo",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"#e6d7a3",altcolor:"#cbb67a",ringcolor:"#a38b4f",altradius:15,maxHp:100,damage:4,description:"Swap with enemy upon taking a hit",onHit(a,d){}},
 fakeVirgo:{name:"fakeVirgo",radius:40,spikeLength:20,spikes:1,rotateSpikes:true,color:"#e6d7a3",altcolor:"#cbb67a",ringcolor:"#a38b4f",altradius:15,maxHp:100,damage:4,hidden:true,description:"Fake Virgo (no ability)",onHit(){}},
 Cancer:{name:"Cancer",radius:40,spikeLength:20,spikes:2,rotateSpikes:true,color:"#e53935",altcolor:"#ff7043",ringcolor:"#8e0000",altradius:15,maxHp:100,damage:3,description:"50% chance to grab enemy and dealing damage",onHit(a,d){if(a.cancerCooldown>0)return; if(Math.random()>0.5)return;if(a.isGrabbing||d.isGrabbed)return;a.isGrabbing=true;d.isGrabbed=true;a.grabTarget=d;d.grabSource=a;a.grabTimer=180;a.grabTick=60;a.cancerCooldown=300;createDamageText(d.x,d.y,"GRAB",a.color);}},
-Pisces:{name:"Pisces",color:"#4fc3f7",altcolor:"#0288d1",ringcolor:"#01579b",altradius:15,radius:40,spikeLength:20,spikes:1,rotateSpikes:true,maxHp:100,damage:2,description:"Creates 2 teleport zones. Heal self, damage enemy.",onHit(){}},
+Pisces:{name:"Pisces",color:"#4fc3f7",altcolor:"#0288d1",ringcolor:"#01579b",altradius:15,radius:40,spikeLength:20,spikes:1,rotateSpikes:true,maxHp:100,damage:2,description:"Creates 2 teleport zones.",onHit(){}},
 };
 
 const TOWER_PRESET = [
